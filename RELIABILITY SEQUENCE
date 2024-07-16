@@ -1,0 +1,30 @@
+import matplotlib.pyplot as mlt
+import numpy as np
+
+def f(p,N):
+    if(N==1):
+        return [1-p]
+
+    return f((2*p-p*p),N//2)+f(p*p,N//2)
+
+# message size
+n=10
+N=2**n
+p=0.5
+
+# Bec splitting
+l=f(p,N)
+#l.sort()
+
+x=np.arange(0,N,1)
+mlt.title("Polarisation in the capacity of channels for n=10 and p=0.5")
+mlt.scatter(x,l)
+mlt.ylabel("Capacity of channels")
+mlt.xlabel("Channel number")
+mlt.show()
+for i in range(N):
+  l[i]=(l[i],i)
+
+l=sorted(l,key=lambda x:x[0])
+for i in l:
+  print(i[1],end=' ')
