@@ -1,0 +1,308 @@
+import numpy as np
+import matplotlib.pyplot as mlt
+import  math as mt
+import  random as rn
+
+
+Q = [
+    0, 1, 2, 4, 8, 16, 32, 3, 5, 64, 9, 6, 17, 10, 18, 128, 12, 33, 65, 20,
+    256, 34, 24, 36, 7, 129, 66, 512, 11, 40, 68, 130, 19, 13, 48, 14, 72, 257,
+    21, 132, 35, 258, 26, 513, 80, 37, 25, 22, 136, 260, 264, 38, 514, 96, 67,
+    41, 144, 28, 69, 42, 516, 49, 74, 272, 160, 520, 288, 528, 192, 544, 70,
+    44, 131, 81, 50, 73, 15, 320, 133, 52, 23, 134, 384, 76, 137, 82, 56, 27,
+    97, 39, 259, 84, 138, 145, 261, 29, 43, 98, 515, 88, 140, 30, 146, 71, 262,
+    265, 161, 576, 45, 100, 640, 51, 148, 46, 75, 266, 273, 517, 104, 162, 53,
+    193, 152, 77, 164, 768, 268, 274, 518, 54, 83, 57, 521, 112, 135, 78, 289,
+    194, 85, 276, 522, 58, 168, 139, 99, 86, 60, 280, 89, 290, 529, 524, 196,
+    141, 101, 147, 176, 142, 530, 321, 31, 200, 90, 545, 292, 322, 532, 263,
+    149, 102, 105, 304, 296, 163, 92, 47, 267, 385, 546, 324, 208, 386, 150,
+    153, 165, 106, 55, 328, 536, 577, 548, 113, 154, 79, 269, 108, 578, 224,
+    166, 519, 552, 195, 270, 641, 523, 275, 580, 291, 59, 169, 560, 114, 277,
+    156, 87, 197, 116, 170, 61, 531, 525, 642, 281, 278, 526, 177, 293, 388,
+    91, 584, 769, 198, 172, 120, 201, 336, 62, 282, 143, 103, 178, 294, 93,
+    644, 202, 592, 323, 392, 297, 770, 107, 180, 151, 209, 284, 648, 94, 204,
+    298, 400, 608, 352, 325, 533, 155, 210, 305, 547, 300, 109, 184, 534, 537,
+    115, 167, 225, 326, 306, 772, 157, 656, 329, 110, 117, 212, 171, 776, 330,
+    226, 549, 538, 387, 308, 216, 416, 271, 279, 158, 337, 550, 672, 118, 332,
+    579, 540, 389, 173, 121, 553, 199, 784, 179, 228, 338, 312, 704, 390, 174,
+    554, 581, 393, 283, 122, 448, 353, 561, 203, 63, 340, 394, 527, 582, 556,
+    181, 295, 285, 232, 124, 205, 182, 643, 562, 286, 585, 299, 354, 211, 401,
+    185, 396, 344, 586, 645, 593, 535, 240, 206, 95, 327, 564, 800, 402, 356,
+    307, 301, 417, 213, 568, 832, 588, 186, 646, 404, 227, 896, 594, 418, 302,
+    649, 771, 360, 539, 111, 331, 214, 309, 188, 449, 217, 408, 609, 596, 551,
+    650, 229, 159, 420, 310, 541, 773, 610, 657, 333, 119, 600, 339, 218, 368,
+    652, 230, 391, 313, 450, 542, 334, 233, 555, 774, 175, 123, 658, 612, 341,
+    777, 220, 314, 424, 395, 673, 583, 355, 287, 183, 234, 125, 557, 660, 616,
+    342, 316, 241, 778, 563, 345, 452, 397, 403, 207, 674, 558, 785, 432, 357,
+    187, 236, 664, 624, 587, 780, 705, 126, 242, 565, 398, 346, 456, 358, 405,
+    303, 569, 244, 595, 189, 566, 676, 361, 706, 589, 215, 786, 647, 348, 419,
+    406, 464, 680, 801, 362, 590, 409, 570, 788, 597, 572, 219, 311, 708, 598,
+    601, 651, 421, 792, 802, 611, 26, 602, 410, 231, 688, 653, 248, 369, 190,
+    364, 654, 659, 335, 480, 315, 221, 370, 613, 422, 425, 451, 614, 543, 235,
+    412, 343, 372, 775, 317, 222, 426, 453, 237, 559, 833, 804, 712, 834, 661,
+    808, 779, 617, 604, 433, 720, 816, 836, 347, 897, 243, 662, 454, 318, 675,
+    618, 898, 781, 376, 428, 665, 736, 567, 840, 625, 238, 359, 457, 399, 787,
+    591, 678, 434, 677, 349, 245, 458, 666, 620, 363, 127, 191, 782, 407, 436,
+    626, 571, 465, 681, 246, 707, 350, 599, 668, 790, 460, 249, 682, 573, 411,
+    803, 789, 709, 365, 440, 628, 689, 374, 423, 466, 793, 250, 371, 481, 574,
+    413, 603, 366, 468, 655, 900, 805, 615, 684, 710, 429, 794, 252, 373, 605,
+    848, 690, 713, 632, 482, 806, 427, 904, 414, 223, 663, 692, 835, 619, 472,
+    455, 796, 809, 714, 721, 837, 716, 864, 810, 606, 912, 722, 696, 377, 435,
+    817, 319, 621, 812, 484, 430, 838, 667, 488, 239, 378, 459, 622, 627, 437,
+    380, 818, 461, 496, 669, 679, 724, 841, 629, 351, 467, 438, 737, 251, 462,
+    442, 441, 469, 247, 683, 842, 738, 899, 670, 783, 849, 820, 728, 928, 791,
+    367, 901, 630, 685, 844, 633, 711, 253, 691, 824, 902, 686, 740, 850, 375,
+    444, 470, 483, 415, 485, 905, 795, 473, 634, 744, 852, 960, 865, 693, 797,
+    906, 715, 807, 474, 636, 694, 254, 717, 575, 913, 798, 811, 379, 697, 431,
+    607, 489, 866, 723, 486, 908, 718, 813, 476, 856, 839, 725, 698, 914, 752,
+    868, 819, 814, 439, 929, 490, 623, 671, 739, 916, 463, 843, 381, 497, 930,
+    821, 726, 961, 872, 492, 631, 729, 700, 443, 741, 845, 920, 382, 822, 851,
+    730, 498, 880, 742, 445, 471, 635, 932, 687, 903, 825, 500, 846, 745, 826,
+    732, 446, 962, 936, 475, 853, 867, 637, 907, 487, 695, 746, 828, 753, 854,
+    857, 504, 799, 255, 964, 909, 719, 477, 915, 638, 748, 944, 869, 491, 699,
+    754, 858, 478, 968, 383, 910, 815, 976, 870, 917, 727, 493, 873, 701, 931,
+    756, 860, 499, 731, 823, 922, 874, 918, 502, 933, 743, 760, 881, 494, 702,
+    921, 501, 876, 847, 992, 447, 733, 827, 934, 882, 937, 963, 747, 505, 855,
+    924, 734, 829, 965, 938, 884, 506, 749, 945, 966, 755, 859, 940, 830, 911,
+    871, 639, 888, 479, 946, 750, 969, 508, 861, 757, 970, 919, 875, 862, 758,
+    948, 977, 923, 972, 761, 877, 952, 495, 703, 935, 978, 883, 762, 503, 925,
+    878, 735, 993, 885, 939, 994, 980, 926, 764, 941, 967, 886, 831, 947, 507,
+    889, 984, 751, 942, 996, 971, 890, 509, 949, 973, 1000, 892, 950, 863, 759,
+    1008, 510, 979, 953, 763, 974, 954, 879, 981, 982, 927, 995, 765, 956, 887,
+    985, 997, 986, 943, 891, 998, 766, 511, 988, 1001, 951, 1002, 893, 975,
+    894, 1009, 955, 1004, 1010, 957, 983, 958, 987, 1012, 999, 1016, 767, 989,
+    1003, 990, 1005, 959, 1011, 1013, 895, 1006, 1014, 1017, 1018, 991, 1020,
+    1007, 1015, 1019, 1021, 1022, 1023
+]
+
+
+ebs=np.arange(0,10.5,0.5)
+sp=[]
+BER_SCL=[]
+simu=10000
+
+#---------finding the Realiability Sequence for the given N------------
+for ebdb in ebs:
+    sucess=0
+    er=0
+    for nsim in range(simu):
+        N = 16
+        K = 10
+        cbits=3
+        n = int(mt.log2(N))
+        nl=4
+        def xor(a, b):
+            result=a+b
+            result=result%2
+            return result[1:]
+
+        def crc(a,b):
+            ans=np.array(a[0:len(b)])
+            for i in range(len(a)-len(b)+1):
+                if(ans[0]==1):
+                    ans=xor(ans,b)
+                else:
+                    ans=ans[1:]
+                if(i+len(b)!=len(a)):
+                    ans=np.concatenate((ans, [a[i + len(b)]]))
+            return ans.astype(int)
+
+
+        def f_fun(a, b):
+            result = (1 - 2 * (a < 0)) * (1 - 2 * (b < 0)) * np.minimum(np.abs(a), np.abs(b))
+            return result
+
+        def g_fun(a, b, c):
+            result = b + (1 - 2 * c) * a
+            return result
+
+        def add_crc(msg,K,cbits):
+            crkey=[1,rn.randint(0,1),rn.randint(0,1)]
+            div=np.concatenate((msg,np.zeros(cbits-1))).copy()
+            rem=crc(div,crkey)
+            msg=np.concatenate((msg,rem),dtype=int)
+            return msg,div,rem,crkey,(K+cbits-1)
+
+        def encode(msg):
+            l=len(msg)
+            if(l==2):
+                return [msg[0]^msg[1],msg[1]]
+            a=msg[0:l//2]
+            b=msg[l//2:l]
+            a=encode(a)
+            b=encode(b)
+
+            for i in range(l//2):
+                a[i]=a[i]^b[i]
+
+            return a+b
+
+        def add_bpsk(u):
+            for i in range(len(u)):
+                u[i]=1-2*u[i]
+            return 0
+
+        def add_noise(u):
+
+            rate,ebno=K/N,(10**(ebdb/10))
+
+            sigma=mt.sqrt(1/(2*rate*ebno))
+            for i in range(N):
+                u[i]+=sigma*rn.normalvariate(0,1)
+
+            return np.array(u)
+
+        msg = np.random.randint(2,size=K)
+        xi=msg.copy()
+        msg,div,rem,crkey,K=add_crc(msg,K,cbits)
+
+        u=[0]*N
+        frozen=[False]*N
+        frozen_pos=[]
+        gl=0
+        h=0
+        for i in Q:
+            if(gl==(N-K)):
+                break
+            if(i<N):
+                gl+=1
+                frozen[i]=True
+                frozen_pos.append(i)
+
+        for i in range(N):
+            if(frozen[i]==False):
+                u[i]=msg[h]
+                h+=1
+
+        u=encode(u)
+
+        add_bpsk(u)
+
+        noisy_signal=add_noise(u)
+
+        LLR=np.zeros((nl,n+1,N))
+        ucap=np.zeros((nl,n+1,N),dtype=int)
+        PML=np.ones((nl))*np.inf
+        PML[0]=0
+        ns=np.zeros(2**(n+1)-1,dtype=int)
+        for i in range(nl):
+            LLR[i,0,:]=noisy_signal
+
+        node=0
+        depth=0
+        done=0
+
+        while done==0:
+            npos=int((2**depth)-1+node)
+            if depth==n:
+                DM=np.array(LLR[:,n,node])
+                if(frozen[node]):
+                    ucap[:,n,node]=0
+                    PML=np.abs(DM) * (DM < 0)
+                else:
+                    dec=DM < 0
+                    dec=dec.astype(int)
+                    dec2=dec.copy()
+                    PM2=np.concatenate((PML,np.add(PML,np.abs(DM))))
+
+                    pos = np.argpartition(PM2, nl)[:nl]
+
+                    PML = np.sort(PM2[pos])
+
+                    for i in range(nl):
+                        if(pos[i]<nl):
+                            dec2[i]=dec[pos[i]]
+                        else:
+                            pos[i]=pos[i]-nl
+                            dec2[i]=1-dec[pos[i]]
+
+                    LLR=LLR[pos,:,:]
+                    ucap=ucap[pos,:,:]
+                    ucap[:,n,node]=dec2
+                if node==N-1:
+                    done=1
+                else:
+                    node=mt.floor(node/2)
+                    depth=depth-1
+            else:
+                if (ns[npos]==0):
+                    temp=int(2**(n-depth))
+                    ln=LLR[:,depth,temp*node:temp*(node+1)]
+                    a=ln[:,0:temp//2]
+                    b=ln[:,temp//2:]
+                    node=int(node*2)
+                    depth=depth+1
+                    temp=int(temp/2)
+                    LLR[:,depth,temp*node:temp*(node+1)]=f_fun(a,b)
+                    ns[npos]=1
+                else:
+                    if (ns[npos]==1):
+                        temp=int(2**(n-depth))
+                        ln=LLR[:,depth,temp*node:temp*(node+1)]
+                        a=ln[:,0:temp//2]
+                        b=ln[:,temp//2:]
+                        lnode=int(2*node)
+                        ldepth=depth+1
+                        ltemp=temp//2
+                        ucapn=ucap[:,ldepth,ltemp*lnode:ltemp*(lnode+1)]
+                        node=int(node*2)+1
+                        depth=depth+1
+                        temp=int(temp/2)
+                        LLR[:,depth,temp*node:temp*(node+1)]=g_fun(a,b,ucapn)
+                        ns[npos]=2
+                    else:
+                        temp=int(2**(n-depth))
+                        lnode=int(2*node)
+                        rnode=int(2*node)+1
+                        cdepth=depth+1
+                        ctemp=temp//2
+                        ucapl=ucap[:,cdepth,ctemp*lnode:ctemp*(lnode+1)]
+                        ucapr=ucap[:,cdepth,ctemp*rnode:ctemp*(rnode+1)]
+                        ucap[:,depth,temp*node:temp*(node+1)]=np.concatenate((np.add(ucapl,ucapr)%2,ucapr),axis=1)
+                        node=mt.floor(node/2)
+                        depth=depth-1
+
+        msg_c=ucap[:,n,:]
+
+        decoded_msg=[]
+        msg_c = np.delete(msg_c, frozen_pos, axis=1)
+        for i in range(nl):
+            rem=crc(msg_c[i,:],crkey)
+            if(np.all(rem==0)):
+                decoded_msg=msg_c[i,:len(msg_c[i])-len(rem)]
+                break
+            else:
+                decoded_msg=msg_c[0,:len(msg_c[0])-len(rem)]
+
+        error=0
+        for i in range(len(xi)):
+            if(decoded_msg[i]!=xi[i]):
+                error+=1
+        if(error==0):
+            sucess+=1
+        er+=error
+    BER_SCL.append(er/(K*simu))
+    sp.append(sucess/simu)
+
+mlt.plot(ebs,sp)
+mlt.xlabel("E_b/N_o (in dB)")
+mlt.ylabel("Probability of decoding success")
+mlt.grid(True, linestyle='--', alpha=0.7)
+mlt.title("Successive Cancellation List Decoding for Polar Codes (N=16 and K=10)")
+mlt.show()
+
+mlt.plot(ebs,BER_SCL)
+mlt.xlabel("E_b/N_o (in dB)")
+mlt.ylabel("Bit Error Rate")
+mlt.grid(True, linestyle='--', alpha=0.7)
+mlt.title("Successive Cancellation List Decoding for Polar Codes (N=16 and K=10)")
+mlt.show()
+
+mlt.plot(ebs,sp,label="Successive Cancellation List Decoder")
+mlt.plot(ebnodb,Psuccess,label="Successive Cancellation Decoder")
+mlt.xlabel("E_b/N_o (in dB)")
+mlt.ylabel("Probability of decoding success")
+mlt.grid(True, linestyle='--', alpha=0.7)
+mlt.legend(loc='upper left', bbox_to_anchor=(1, 1))
+mlt.title("Comparison between SC and SCL Decoder(N=16 and K=10)")
+mlt.show()
